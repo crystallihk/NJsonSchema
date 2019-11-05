@@ -75,7 +75,18 @@ namespace NJsonSchema.Infrastructure
                 dynamic displayAttribute = attributes.FirstAssignableToTypeNameOrDefault("System.ComponentModel.DataAnnotations.DisplayAttribute");
                 if (displayAttribute != null && !string.IsNullOrEmpty(displayAttribute.Description))
                 {
-                    return displayAttribute.Description;
+                    var method = displayAttribute.GetType().GetMethod("GetDescription");
+
+                    if (method != null)
+                    {
+                        var description = displayAttribute.GetDescription();
+                        if (!string.IsNullOrWhiteSpace(description))
+                            return description;
+                        else
+                            return displayAttribute.Description;
+                    }
+                    else
+                        return displayAttribute.Description;
                 }
 
                 if (type is ContextualMemberInfo contextualMember)
@@ -114,7 +125,18 @@ namespace NJsonSchema.Infrastructure
                 dynamic displayAttribute = parameter.ContextAttributes.FirstAssignableToTypeNameOrDefault("System.ComponentModel.DataAnnotations.DisplayAttribute");
                 if (displayAttribute != null && !string.IsNullOrEmpty(displayAttribute.Description))
                 {
-                    return displayAttribute.Description;
+                    var method = displayAttribute.GetType().GetMethod("GetDescription");
+
+                    if (method != null)
+                    {
+                        var description = displayAttribute.GetDescription();
+                        if (!string.IsNullOrWhiteSpace(description))
+                            return description;
+                        else
+                            return displayAttribute.Description;
+                    }
+                    else
+                        return displayAttribute.Description;
                 }
 
                 if (parameter != null)
